@@ -5,6 +5,7 @@ from search import Search
 
 KNOWN_WORD_MARKER = '#'
 
+
 class Db(object):
     def __init__(self, lines):
         self.data = {}

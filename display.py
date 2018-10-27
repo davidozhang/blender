@@ -2,6 +2,7 @@ import emoji
 
 from search import Search
 
+
 class Display:
     @staticmethod
     def wrap(l):
@@ -46,13 +47,18 @@ class Display:
             print ' '.join(words)
 
     @staticmethod
+    def get_number_of_words_string(twc, kwc):
+        return 'Number of words: {} ({} known/{} unknown)'.format(
+            str(twc),
+            kwc,
+            str(twc - kwc)
+        )
+
+    @staticmethod
     def display_header(twc, kwc):
         Display.wrap([
             'Blender - Word flashcard generator',
-            'Number of words: {} ({} known/{} unknown)'.format(
-                str(twc),
-                kwc,
-                str(twc - kwc)),
+            Display.get_number_of_words_string(twc, kwc),
             'Keyboard shortcuts: {} - know it, {} - not quite (opens dictionary), {} - get context, {} - all words'.format(
                 'a',
                 's',
@@ -66,15 +72,14 @@ class Display:
     def display_all_words(d, twc, kwc):
         Display.wrap([
             'Start of display',
-            'Number of words: {} ({} known/{} unknown)'.format(
-                str(twc),
-                kwc,
-                str(twc - kwc)
-            )
+            Display.get_number_of_words_string(twc, kwc)
         ])
         for k in sorted(d.keys()):
             Display.display(k, True)
-        Display.wrap(['End of display'])
+        Display.wrap([
+            'End of display',
+            Display.get_number_of_words_string(twc, kwc)
+        ])
 
     @staticmethod
     def error(s):

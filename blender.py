@@ -1,6 +1,6 @@
 '''
 Blender - Terminal word flashcard generator for macOS
-v1.6
+v1.7
 
 Generate flashcards from a file containing sentences with a marked key word, like this:
 an *objurgation* is expected for coming home after curfew
@@ -13,7 +13,6 @@ import sys
 from db import Db
 from display import Display
 from file_io import FileIO
-from search import Search
 
 
 def main():
@@ -40,14 +39,16 @@ def main():
     try:
         context_required = False
         error = False
+        display_all_words = False
         k = None
         while True:
-            if not context_required and not error:
+            if not context_required and not error and not display_all_words:
                 k, v = db.get_next_key_value()
 
             Display.display(v) if context_required else Display.display(k, True)
             context_required = False
             error = False
+            display_all_words = False
 
             inp = raw_input('a/s/d/f: ').lower()
             if inp == 'a':
@@ -63,6 +64,7 @@ def main():
                     db.get_total_word_count(),
                     db.get_known_word_count()
                 )
+                display_all_words = True
             else:
                 Display.error('Invalid command!\n')
                 error = True
