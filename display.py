@@ -46,8 +46,32 @@ class Display:
             print ' '.join(words)
 
     @staticmethod
-    def display_all_words(d):
-        Display.wrap(['Start of display'])
+    def display_header(twc, kwc):
+        Display.wrap([
+            'Blender - Word flashcard generator',
+            'Number of words: {} ({} known/{} unknown)'.format(
+                str(twc),
+                kwc,
+                str(twc - kwc)),
+            'Keyboard shortcuts: {} - know it, {} - not quite (opens dictionary), {} - get context, {} - all words'.format(
+                'a',
+                's',
+                'd',
+                'f'
+            ),
+            'A word that you already know is marked with a ' + Display.thumbs_up_emoji()
+        ])
+
+    @staticmethod
+    def display_all_words(d, twc, kwc):
+        Display.wrap([
+            'Start of display',
+            'Number of words: {} ({} known/{} unknown)'.format(
+                str(twc),
+                kwc,
+                str(twc - kwc)
+            )
+        ])
         for k in sorted(d.keys()):
             Display.display(k, True)
         Display.wrap(['End of display'])

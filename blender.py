@@ -32,31 +32,16 @@ def main():
             print line
         sys.exit()
 
-    kwc = db.get_known_word_count()
     twc = db.get_total_word_count()
+    kwc = db.get_known_word_count()
 
-    Display.wrap([
-        'Blender - Word flashcard generator',
-        'Number of words: {} ({} known/{} unknown)'.format(
-            str(twc),
-            kwc,
-            str(twc - kwc)),
-        'Keyboard shortcuts: {} - know it, {} - not quite (opens dictionary), {} - get context, {} - all words'.format(
-            'a',
-            's',
-            'd',
-            'f'
-        ),
-        'A word that you already know is marked with a ' + Display.thumbs_up_emoji()
-    ])
+    Display.display_header(twc, kwc)
 
     try:
         context_required = False
         error = False
         k = None
         while True:
-            kwc = db.get_known_word_count()
-
             if not context_required and not error:
                 k, v = db.get_next_key_value()
 
@@ -73,7 +58,11 @@ def main():
             elif inp == 'd':
                 context_required = True
             elif inp == 'f':
-                Display.display_all_words(db.get_data())
+                Display.display_all_words(
+                    db.get_data(),
+                    db.get_total_word_count(),
+                    db.get_known_word_count()
+                )
             else:
                 Display.error('Invalid command!\n')
                 error = True
