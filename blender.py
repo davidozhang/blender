@@ -1,6 +1,6 @@
 '''
 Blender - Terminal word flashcard generator for macOS
-v1.5
+v1.6
 
 Generate flashcards from a file containing sentences with a marked key word, like this:
 an *objurgation* is expected for coming home after curfew
@@ -98,7 +98,7 @@ def write(fp, d):
     written = 0
     l = len(d.keys())
     with open(fp, 'w') as f:
-        for k in d:
+        for k in sorted(d.keys()):
             if written == l - 1:
                 f.write(d[k] + '\n')
             else:
