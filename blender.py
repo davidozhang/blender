@@ -1,6 +1,6 @@
 '''
 Blender - Terminal word flashcard generator for macOS
-v1.7
+v2.0
 
 Generate flashcards from a file containing sentences with a marked key word, like this:
 an *objurgation* is expected for coming home after curfew
@@ -12,6 +12,8 @@ import sys
 
 from db import Db
 from display import Display
+from input_mapper import InputMapper
+from command import Command
 from file_io import FileIO
 
 
@@ -26,9 +28,9 @@ def main():
 
     error_lines = db.get_error_lines()
     if len(error_lines) > 0:
-        Display.error('Keyword was not properly marked in the following lines:')
+        Display.error('Keyword was not properly marked in the following line(s):')
         for line in error_lines:
-            print line
+            Display.display(line)
         sys.exit()
 
     twc = db.get_total_word_count()
@@ -37,37 +39,50 @@ def main():
     Display.display_header(twc, kwc)
 
     try:
-        context_required = False
         error = False
-        display_all_words = False
-        k = None
+        next_word = True
+
+        k, v = None, None
+        prompt = InputMapper.get_prompt()
+
         while True:
-            if not context_required and not error and not display_all_words:
+            if not error and next_word:
                 k, v = db.get_next_key_value()
 
-            Display.display(v) if context_required else Display.display(k, True)
-            context_required = False
-            error = False
-            display_all_words = False
+            Display.display(k, True)
 
-            inp = raw_input('a/s/d/f: ').lower()
-            if inp == 'a':
-                db.mark(k)
-            elif inp == 's':
-                db.unmark(k)
-                os.system('open dict://{}'.format(k.split()[0]))
-            elif inp == 'd':
-                context_required = True
-            elif inp == 'f':
-                Display.display_all_words(
-                    db.get_data(),
-                    db.get_total_word_count(),
-                    db.get_known_word_count()
-                )
-                display_all_words = True
-            else:
-                Display.error('Invalid command!\n')
-                error = True
+            error = False
+            next_word = False
+
+            inp = raw_input(prompt).lower()
+            commands = InputMapper.get_commands(inp)
+
+            for command in commands:
+                if command == Command.KNOW_IT:
+                    db.mark(k)
+                    next_word = True
+                elif command == Command.NOT_QUITE:
+                    db.unmark(k)
+                    next_word = True
+                elif command == Command.OPEN_DICTIONARY:
+                    w = k.split()[0]
+                    Display.info('Opening dictionary for ' + Display.bold_replace(w))
+                    os.system('open dict://{}'.format(w))
+                elif command == Command.SHOW_CONTEXT:
+                    Display.display(v)
+                elif command == Command.DISPLAY_ALL_WORDS:
+                    Display.display_all_words(
+                        db.get_data(),
+                        db.get_total_word_count(),
+                        db.get_known_word_count()
+                    )
+                elif command == Command.CONFLICTING:
+                    Display.error('Conflicting command')
+                    error = True
+                else:
+                    Display.error('Unknown command')
+                    error = True
+            Display.new_line()
 
     except KeyboardInterrupt:
         pass
