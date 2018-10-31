@@ -1,28 +1,39 @@
 # Blender
 Terminal word flashcard generator for macOS
 
-<img width="721" alt="screen shot 2018-10-26 at 11 18 06 pm" src="https://user-images.githubusercontent.com/6395458/47600405-6d1fc600-d975-11e8-8977-071286bbd1fa.png">
+<img width="802" alt="screen shot 2018-10-30 at 9 19 53 pm" src="https://user-images.githubusercontent.com/6395458/47765943-9a2beb80-dc89-11e8-91aa-d7b2925bbe84.png">
 
 ## How to use
-Write up sentences in a text file and wrap the keyword you want to learn with asterisks (*). Blender will pick up those words and generate flashcards within the terminal for you to study with!
+Write up sentences in a text file and wrap the keyword you want to learn with asterisks (`*`):
+
+`an *objurgation* is expected for coming home after curfew`
+
+Blender will pick up those words and generate flashcards within the terminal for you to study with!
 
 Run the program and pass the file location into the program with parameter, like this:
 
-```python blender.py --filepath file_location.txt```
+```bash
+python blender.py --filepath file_location.txt
+```
 
-For each flashcard word you can:
-- Press 'a' if you know it
-- Press 's' if you don't quite know it (Blender will open the native dictionary to help you revisit the definition)
-- Press 'd' if you want the context of the word in a sentence
-- Press 'f' to show all the words you're studying with so far, with the words you know marked with a 👍
+For each flashcard you can:
+- Mark it as known
+- Pass on it
+- Show the context that the word is used in
+- Open dictionary to revisit definition
+- View all the words you're studying with so far, the words you know are marked with a 👍
 
-Upon exiting, Blender will automatically mark all the lines containing the words you know in the original file with a '#'.
+Upon exiting, Blender will automatically prepend all the lines containing the words you know in the original file with a `#`.
 
 Happy studying!
 
 ## Installation
 Make sure you have pip installed on your laptop (https://pip.pypa.io/en/stable/installing/).
-You can install the requirements with `pip install requirements.txt`
+You must install the requirements:
+
+```bash
+pip install -r requirements.txt
+```
 
 ## Issues?
 File an issue or make a pull request to suggest a change to Blender!
