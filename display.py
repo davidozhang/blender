@@ -1,5 +1,6 @@
 import emoji
 
+from input_mapper import InputMapper
 from search import Search
 
 
@@ -45,6 +46,8 @@ class Display:
                     words[i] = replace
 
             print ' '.join(words)
+        else:
+            print line
 
     @staticmethod
     def get_number_of_words_string(twc, kwc):
@@ -59,12 +62,8 @@ class Display:
         Display.wrap([
             'Blender - Word flashcard generator',
             Display.get_number_of_words_string(twc, kwc),
-            'Keyboard shortcuts: {} - know it, {} - not quite (opens dictionary), {} - get context, {} - all words'.format(
-                'a',
-                's',
-                'd',
-                'f'
-            ),
+
+            'Keyboard shortcuts: {}'.format(InputMapper.get_description()),
             'A word that you already know is marked with a ' + Display.thumbs_up_emoji()
         ])
 
@@ -84,3 +83,11 @@ class Display:
     @staticmethod
     def error(s):
         Display.display('[Error] {}'.format(s), True)
+
+    @staticmethod
+    def info(s):
+        Display.display('[Info] {}'.format(s))
+
+    @staticmethod
+    def new_line():
+        Display.display('')
