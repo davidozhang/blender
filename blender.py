@@ -4,6 +4,8 @@ v3.0
 
 Generate flashcards from a file containing sentences with a marked key word, like this:
 an *objurgation* is expected for coming home after curfew
+
+Also supports generating word association map (optional)
 '''
 
 import argparse
@@ -17,16 +19,17 @@ from command import Command
 from file_io import FileIO
 from word_association import WordAssociation
 
+WORD_ASSOCIATION_DEFAULT_FILE = '.word_association'
 
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--sentences', help='path to sentences file', type=str)
-    # parser.add_argument('--associations', help='path to associations file', type=str)
 
     args = parser.parse_args()
-    sentences = args.sentences
-    db = Db(FileIO.read(sentences))
-    wa = WordAssociation()
+    sentences_file = args.sentences
+
+    db = Db(FileIO.read(sentences_file))
+    wa = WordAssociation(FileIO.read_optional(WORD_ASSOCIATION_DEFAULT_FILE))
 
     error_lines = db.get_error_lines()
     if len(error_lines) > 0:
@@ -85,7 +88,7 @@ def main():
                     assoc.append(word)
                     wa.associate(assoc)
                 elif command == Command.DISPLAY_ALL_WORD_ASSOCIATION_GROUPS:
-                    Display.display_all_groups(wa.get_groups(), wa.get_num_groups())
+                    Display.display_all_groups(wa.get_associations(), wa.get_num_associations())
                 elif command == Command.CONFLICTING:
                     Display.error('Conflicting command')
                     error = True
@@ -97,7 +100,8 @@ def main():
     except KeyboardInterrupt:
         pass
     finally:
-        FileIO.write(sentences, db.get_data())
+        FileIO.write_db(sentences_file, db.get_data())
+        FileIO.write_associations(WORD_ASSOCIATION_DEFAULT_FILE, wa.get_associations())
 
 if __name__ == '__main__':
     main()
