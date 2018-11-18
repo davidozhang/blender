@@ -12,14 +12,15 @@ import argparse
 import os
 import sys
 
+from command import Command
 from db import Db
 from display import Display
 from input_mapper import InputMapper
-from command import Command
 from file_io import FileIO
 from word_association import WordAssociation
 
 WORD_ASSOCIATION_DEFAULT_FILE = '.word_association'
+
 
 def main():
     parser = argparse.ArgumentParser()
@@ -66,7 +67,7 @@ def main():
                 if command == Command.KNOW_IT:
                     db.mark(k)
                     next_word = True
-                elif command == Command.NOT_QUITE_KNOW_IT:
+                elif command == Command.SKIP:
                     db.unmark(k)
                     next_word = True
                 elif command == Command.OPEN_DICTIONARY:

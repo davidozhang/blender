@@ -1,5 +1,6 @@
 import re
 
+
 class Search:
     '''
     Given a string, returns the regex search result for string wrapped within asterisks.

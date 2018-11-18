@@ -1,9 +1,10 @@
 from command import Command
 
+
 class InputMapper:
     mapping = {
         'a': Command.KNOW_IT,
-        's': Command.NOT_QUITE_KNOW_IT,
+        's': Command.SKIP,
         'c': Command.SHOW_CONTEXT,
         'd': Command.OPEN_DICTIONARY,
         'f': Command.DISPLAY_ALL_WORDS,
@@ -24,7 +25,7 @@ class InputMapper:
                 return [Command.UNKNOWN]
             s.add(InputMapper.mapping[w])
 
-        if Command.KNOW_IT in s and Command.NOT_QUITE_KNOW_IT in s:
+        if Command.KNOW_IT in s and Command.SKIP in s:
             return [Command.CONFLICTING]
 
         return list(s)
