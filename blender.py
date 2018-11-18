@@ -80,8 +80,10 @@ def main():
                     )
                 elif command == Command.ASSOCIATE:
                     word = Db.strip_key(k)
-                    words = [w.lower() for w in raw_input('Enter words to associate \'{}\' with, separated by space: '.format(word)).split()]
-                    wa.associate(word, words)
+                    assoc = raw_input('Enter words to associate \'{}\' with, separated by space: '.format(word)).split()
+                    assoc = [w.lower() for w in assoc]
+                    assoc.append(word)
+                    wa.associate(assoc)
                 elif command == Command.DISPLAY_ALL_WORD_ASSOCIATION_GROUPS:
                     Display.display_all_groups(wa.get_groups(), wa.get_num_groups())
                 elif command == Command.CONFLICTING:

@@ -92,7 +92,7 @@ class Display:
         ])
         for i, group in enumerate(groups):
             Display.display('Group #{}'.format(i+1), True)
-            Display.display(' '.join(list(group)), False)
+            Display.display(' '.join(sorted(list(group))), False)
             if i < num_groups - 1:
                 Display.new_line()
         Display.wrap([
