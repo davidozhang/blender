@@ -92,7 +92,7 @@ class Display:
         ])
         for i, association in enumerate(associations):
             Display.display('Association #{}'.format(i+1), True)
-            Display.display(' '.join(sorted(list(association))), False)
+            Display.display(' '.join(sorted(list(association))))
             if i < num_associations - 1:
                 Display.new_line()
         Display.wrap([
@@ -104,7 +104,7 @@ class Display:
         if len(words) == 0:
             Display.info('No associated words found. Consider adding some associations?')
         else:
-            Display.display(' '.join(sorted(words)), False)
+            Display.display(' '.join(sorted(words)))
 
     @staticmethod
     def get_association_prompt(word):
