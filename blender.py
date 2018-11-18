@@ -5,7 +5,7 @@ v3.0
 Generate flashcards from a file containing sentences with a marked key word, like this:
 an *objurgation* is expected for coming home after curfew
 
-Also supports generating word association map (optional)
+Also optionally supports generating word association map.
 '''
 
 import argparse
@@ -70,9 +70,9 @@ def main():
                     db.unmark(k)
                     next_word = True
                 elif command == Command.OPEN_DICTIONARY:
-                    w = k.split()[0]
-                    Display.info('Opening dictionary for ' + Display.bold_replace(w))
-                    os.system('open dict://{}'.format(w))
+                    word = Db.strip_key(k)
+                    Display.info('Opening dictionary for ' + Display.bold_replace(word))
+                    os.system('open dict://{}'.format(word))
                 elif command == Command.SHOW_CONTEXT:
                     Display.display(v)
                 elif command == Command.DISPLAY_ALL_WORDS:
@@ -83,12 +83,17 @@ def main():
                     )
                 elif command == Command.ASSOCIATE:
                     word = Db.strip_key(k)
-                    assoc = raw_input('Enter words to associate \'{}\' with, separated by space: '.format(word)).split()
-                    assoc = [w.lower() for w in assoc]
-                    assoc.append(word)
-                    wa.associate(assoc)
-                elif command == Command.DISPLAY_ALL_WORD_ASSOCIATION_GROUPS:
-                    Display.display_all_groups(wa.get_associations(), wa.get_num_associations())
+                    word_prompt = Display.get_association_prompt(word)
+                    associations = raw_input(word_prompt).split()
+                    associations = [w.lower() for w in associations]
+                    associations.append(word)
+                    wa.associate(associations)
+                elif command == Command.DISPLAY_ASSOCIATED_WORDS:
+                    word = Db.strip_key(k)
+                    words = wa.get_associations_for_word(word)
+                    Display.display_associated_words(words)
+                elif command == Command.DISPLAY_ALL_ASSOCIATIONS:
+                    Display.display_all_associations(wa.get_all_associations(), wa.get_num_associations())
                 elif command == Command.CONFLICTING:
                     Display.error('Conflicting command')
                     error = True
@@ -101,7 +106,7 @@ def main():
         pass
     finally:
         FileIO.write_db(sentences_file, db.get_data())
-        FileIO.write_associations(WORD_ASSOCIATION_DEFAULT_FILE, wa.get_associations())
+        FileIO.write_associations(WORD_ASSOCIATION_DEFAULT_FILE, wa.get_all_associations())
 
 if __name__ == '__main__':
     main()

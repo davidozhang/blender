@@ -35,7 +35,7 @@ class FileIO:
             for a in associations:
                 l = len(a)
                 written = 0
-                for word in a:
+                for word in sorted(a):
                     if written == l -1:
                         f.write(word)
                     else:

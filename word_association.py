@@ -16,7 +16,7 @@ class WordAssociation(object):
 
         for word in words:
             # Add all words to existing associations if possible
-            if self.lookup_indices(word):
+            if len(self.lookup_indices(word)) > 0:
                 indices += self.lookup_indices(word)
 
         # If no associations exist for these words, we create a new association
@@ -51,13 +51,25 @@ class WordAssociation(object):
             self.lookup[k] = set(indices)
 
     '''
-    Given a key, return the indices that belong to the key, None if the key does not exist.
+    Given a key, return the indices that belong to the key, [] if the key does not exist.
     '''
     def lookup_indices(self, k):
-        return list(self.lookup[k]) if k in self.lookup else None
+        return list(self.lookup[k]) if k in self.lookup else []
 
     def get_num_associations(self):
         return self.num_associations
 
-    def get_associations(self):
+    def get_all_associations(self):
         return self.associations
+
+    '''
+    Given a word, returns all the words that are associated to the word, [] if the word does not have
+    any associations.
+    '''
+    def get_associations_for_word(self, word):
+        result = []
+        indices = self.lookup_indices(word)
+        for index in indices:
+            association = self.associations[index]
+            result += association
+        return result

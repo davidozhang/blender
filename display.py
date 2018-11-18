@@ -85,19 +85,30 @@ class Display:
         ])
 
     @staticmethod
-    def display_all_groups(groups, num_groups):
+    def display_all_associations(associations, num_associations):
         Display.wrap([
             'Start of display',
-            'Number of word association groups: {}'.format(num_groups)
+            'Number of word associations: {}'.format(num_associations)
         ])
-        for i, group in enumerate(groups):
-            Display.display('Group #{}'.format(i+1), True)
-            Display.display(' '.join(sorted(list(group))), False)
-            if i < num_groups - 1:
+        for i, association in enumerate(associations):
+            Display.display('Association #{}'.format(i+1), True)
+            Display.display(' '.join(sorted(list(association))), False)
+            if i < num_associations - 1:
                 Display.new_line()
         Display.wrap([
             'End of display'
         ])
+
+    @staticmethod
+    def display_associated_words(words):
+        if len(words) == 0:
+            Display.info('No associated words found. Consider adding some associations?')
+        else:
+            Display.display(' '.join(sorted(words)), False)
+
+    @staticmethod
+    def get_association_prompt(word):
+        return 'Enter words to associate {} with, separated by space: '.format(Display.bold_replace(word))
 
     @staticmethod
     def error(s):

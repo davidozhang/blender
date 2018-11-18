@@ -8,7 +8,8 @@ class InputMapper:
         'd': Command.OPEN_DICTIONARY,
         'f': Command.DISPLAY_ALL_WORDS,
         'q': Command.ASSOCIATE,
-        'w': Command.DISPLAY_ALL_WORD_ASSOCIATION_GROUPS,
+        'w': Command.DISPLAY_ASSOCIATED_WORDS,
+        'e': Command.DISPLAY_ALL_ASSOCIATIONS,
     }
 
     @staticmethod
