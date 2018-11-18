@@ -12,14 +12,15 @@ import argparse
 import os
 import sys
 
+from command import Command
 from db import Db
 from display import Display
 from input_mapper import InputMapper
-from command import Command
 from file_io import FileIO
 from word_association import WordAssociation
 
 WORD_ASSOCIATION_DEFAULT_FILE = '.word_association'
+
 
 def main():
     parser = argparse.ArgumentParser()

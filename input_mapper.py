@@ -1,5 +1,6 @@
 from command import Command
 
+
 class InputMapper:
     mapping = {
         'a': Command.KNOW_IT,

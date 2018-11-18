@@ -1,5 +1,6 @@
 from enum import Enum
 
+
 '''
 A class that encodes all the available commands in Blender.
 '''
