@@ -59,13 +59,17 @@ class Display:
 
     @staticmethod
     def display_header(twc, kwc):
-        Display.wrap([
+        header_list = [
             'Blender - Word flashcard generator',
             Display.get_number_of_words_string(twc, kwc),
+            'A word that you already know is marked with a ' + Display.thumbs_up_emoji(),
+            'Keyboard shortcuts: ',
+        ]
 
-            'Keyboard shortcuts: {}'.format(InputMapper.get_description()),
-            'A word that you already know is marked with a ' + Display.thumbs_up_emoji()
-        ])
+        for desc in InputMapper.get_descriptions():
+            header_list.append(desc)
+
+        Display.wrap(header_list)
 
     @staticmethod
     def display_all_words(d, twc, kwc):
@@ -78,6 +82,21 @@ class Display:
         Display.wrap([
             'End of display',
             Display.get_number_of_words_string(twc, kwc)
+        ])
+
+    @staticmethod
+    def display_all_groups(groups, num_groups):
+        Display.wrap([
+            'Start of display',
+            'Number of word association groups: {}'.format(num_groups)
+        ])
+        for i, group in enumerate(groups):
+            Display.display('Group #{}'.format(i+1), True)
+            Display.display(' '.join(list(group)), False)
+            if i < num_groups - 1:
+                Display.new_line()
+        Display.wrap([
+            'End of display'
         ])
 
     @staticmethod

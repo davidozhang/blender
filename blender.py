@@ -1,6 +1,6 @@
 '''
 Blender - Terminal word flashcard generator for macOS
-v2.0
+v3.0
 
 Generate flashcards from a file containing sentences with a marked key word, like this:
 an *objurgation* is expected for coming home after curfew
@@ -15,16 +15,18 @@ from display import Display
 from input_mapper import InputMapper
 from command import Command
 from file_io import FileIO
+from word_association import WordAssociation
 
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--filepath', help='file path', type=str)
+    parser.add_argument('--sentences', help='path to sentences file', type=str)
+    # parser.add_argument('--associations', help='path to associations file', type=str)
 
     args = parser.parse_args()
-    fp = args.filepath
-    lines = FileIO.read(fp)
-    db = Db(lines)
+    sentences = args.sentences
+    db = Db(FileIO.read(sentences))
+    wa = WordAssociation()
 
     error_lines = db.get_error_lines()
     if len(error_lines) > 0:
@@ -43,7 +45,7 @@ def main():
         next_word = True
 
         k, v = None, None
-        prompt = InputMapper.get_prompt()
+        prompt = InputMapper.get_main_prompt()
 
         while True:
             if not error and next_word:
@@ -61,7 +63,7 @@ def main():
                 if command == Command.KNOW_IT:
                     db.mark(k)
                     next_word = True
-                elif command == Command.NOT_QUITE:
+                elif command == Command.NOT_QUITE_KNOW_IT:
                     db.unmark(k)
                     next_word = True
                 elif command == Command.OPEN_DICTIONARY:
@@ -76,6 +78,12 @@ def main():
                         db.get_total_word_count(),
                         db.get_known_word_count()
                     )
+                elif command == Command.ASSOCIATE:
+                    word = Db.strip_key(k)
+                    words = [w.lower() for w in raw_input('Enter words to associate \'{}\' with, separated by space: '.format(word)).split()]
+                    wa.associate(word, words)
+                elif command == Command.DISPLAY_ALL_WORD_ASSOCIATION_GROUPS:
+                    Display.display_all_groups(wa.get_groups(), wa.get_num_groups())
                 elif command == Command.CONFLICTING:
                     Display.error('Conflicting command')
                     error = True
@@ -87,7 +95,7 @@ def main():
     except KeyboardInterrupt:
         pass
     finally:
-        FileIO.write(fp, db.get_data())
+        FileIO.write(sentences, db.get_data())
 
 if __name__ == '__main__':
     main()

@@ -62,7 +62,7 @@ class Db(object):
             words = self.data[k].split()
             if len(words) > 0 and words[0] == KNOWN_WORD_MARKER:
                 self.known_word_count -= 1
-                self.data[Db.mark_key_as_unknown(k)] = ' '.join(words[1:])
+                self.data[Db.strip_key(k)] = ' '.join(words[1:])
                 self.data.pop(k)
 
     @staticmethod
@@ -70,5 +70,5 @@ class Db(object):
         return k + ' ' + Display.thumbs_up_emoji()
 
     @staticmethod
-    def mark_key_as_unknown(k):
+    def strip_key(k):
         return k.split()[0]

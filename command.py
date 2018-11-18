@@ -3,9 +3,11 @@ from enum import Enum
 
 class Command(Enum):
     KNOW_IT = 1
-    NOT_QUITE = 2
+    NOT_QUITE_KNOW_IT = 2
     OPEN_DICTIONARY = 3
     SHOW_CONTEXT = 4
     DISPLAY_ALL_WORDS = 5
-    UNKNOWN = 6
-    CONFLICTING = 7
+    ASSOCIATE = 6
+    DISPLAY_ALL_WORD_ASSOCIATION_GROUPS = 7
+    UNKNOWN = 8
+    CONFLICTING = 9
