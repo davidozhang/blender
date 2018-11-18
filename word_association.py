@@ -7,6 +7,10 @@ class WordAssociation(object):
         for line in lines:
             self.create_group(line.split())
 
+    '''
+    Given a list of words, adds all the words to existing groups keyed by 1 or more of the words. Otherwise,
+    creates a new group and adds all the words to that group.
+    '''
     def associate(self, words):
         indices = []
 
@@ -24,6 +28,9 @@ class WordAssociation(object):
                 self.groups[index].add(word)
             self.update_lookup_indices(word, indices)
 
+    '''
+    Given a list of words, creates a group and returns its index as a list.
+    '''
     def create_group(self, words):
         self.groups.append(set(words))
         self.num_groups += 1
@@ -33,6 +40,9 @@ class WordAssociation(object):
             self.update_lookup_indices(word, indices)
         return indices
 
+    '''
+    Given a key and list of indices, updates the lookup entry for the key with the new indices.
+    '''
     def update_lookup_indices(self, k, indices):
         if k in self.lookup:
             for index in indices:
@@ -40,6 +50,9 @@ class WordAssociation(object):
         else:
             self.lookup[k] = set(indices)
 
+    '''
+    Given a key, return the indices that belong to the key, None if the key does not exist.
+    '''
     def lookup_indices(self, k):
         return list(self.lookup[k]) if k in self.lookup else None
 
