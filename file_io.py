@@ -1,4 +1,7 @@
 class FileIO:
+    '''
+    Given a file path, reads the content into a list of strings.
+    '''
     @staticmethod
     def read(fp):
         lines = []
@@ -6,6 +9,10 @@ class FileIO:
             lines = f.read().splitlines()
         return lines
 
+    '''
+    Given a file path, reads the content into a list of strings if the file path exists.
+    Otherwise, returns [].
+    '''
     @staticmethod
     def read_optional(fp):
         try:
@@ -13,6 +20,9 @@ class FileIO:
         except IOError:
             return []
 
+    '''
+    Given a file path and dictionary, writes the content of the dictionary to the file.
+    '''
     @staticmethod
     def write_db(fp, db):
         written = 0
@@ -25,6 +35,9 @@ class FileIO:
                     f.write(db[k] + '\n\n')
                 written += 1
 
+    '''
+    Given a file path and list of associations, writes the content of the associations to the file.
+    '''
     @staticmethod
     def write_associations(fp, associations):
         l = len(associations)

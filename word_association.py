@@ -41,9 +41,15 @@ class WordAssociation(object):
                 result.add(word)
         return list(result)
 
+    '''
+    Returns the total number of associations.
+    '''
     def get_num_associations(self):
         return self.num_associations
 
+    '''
+    Returns all the associations.
+    '''
     def get_all_associations(self):
         return self.associations
 

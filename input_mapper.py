@@ -12,6 +12,10 @@ class InputMapper:
         'e': Command.DISPLAY_ALL_ASSOCIATIONS,
     }
 
+    '''
+    Given a user input containing commands, maps it to a list of Command enums.
+    Checks for conflicting operations.
+    '''
     @staticmethod
     def get_commands(inp):
         s = set()
@@ -25,10 +29,16 @@ class InputMapper:
 
         return list(s)
 
+    '''
+    Generates an input prompt using the input mapping keys.
+    '''
     @staticmethod
     def get_main_prompt():
         return '/'.join(sorted(InputMapper.mapping.keys())) + ': '
 
+    '''
+    Generates input descriptions by transforming the Command enum names.
+    '''
     @staticmethod
     def get_descriptions():
         l = sorted(InputMapper.mapping.keys())

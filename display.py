@@ -5,6 +5,9 @@ from search import Search
 
 
 class Display:
+    '''
+    Given a list of strings, wraps the content neatly within a box consisting of asterisks.
+    '''
     @staticmethod
     def wrap(l):
         border = ''
@@ -19,14 +22,24 @@ class Display:
             print '* '+j+' '*(max-1-len('* ' + j)) + '*'
         print border + '\n'
 
+    '''
+    Returns a terminal-compatible thumbs up emoji.
+    '''
     @staticmethod
     def thumbs_up_emoji():
         return emoji.emojize(':thumbs_up:')
 
+    '''
+    Given a string, returns it bolded.
+    '''
     @staticmethod
     def bold_replace(s):
         return '\033[1m' + s + '\033[0m'
 
+    '''
+    Given a string, this will display it, with the exception of bolding a keyword if it is found within asterisks.
+    Alternatively, if all_bold is set to true, the entire string will be bolded.
+    '''
     @staticmethod
     def display(line, all_bold=False):
         words = line.split()
@@ -49,6 +62,9 @@ class Display:
         else:
             print line
 
+    '''
+    Retuns a string that encodes word count info
+    '''
     @staticmethod
     def get_number_of_words_string(twc, kwc):
         return 'Number of words: {} ({} known/{} unknown)'.format(
@@ -57,6 +73,9 @@ class Display:
             str(twc - kwc)
         )
 
+    '''
+    Returns the display header that is shown upon starting Blender.
+    '''
     @staticmethod
     def display_header(twc, kwc):
         header_list = [
@@ -71,6 +90,9 @@ class Display:
 
         Display.wrap(header_list)
 
+    '''
+    Displays all words, wrapped with starting and ending indicator blocks.
+    '''
     @staticmethod
     def display_all_words(d, twc, kwc):
         Display.wrap([
@@ -84,6 +106,9 @@ class Display:
             Display.get_number_of_words_string(twc, kwc)
         ])
 
+    '''
+    Displays all associations, wrapping with starting and ending indicator blocks.
+    '''
     @staticmethod
     def display_all_associations(associations, num_associations):
         Display.wrap([
@@ -99,6 +124,9 @@ class Display:
             'End of display'
         ])
 
+    '''
+    Displays associated words for a word.
+    '''
     @staticmethod
     def display_associated_words(words):
         if len(words) == 0:
@@ -106,18 +134,30 @@ class Display:
         else:
             Display.display(' '.join(sorted(words)))
 
+    '''
+    Returns the prompt for adding an association
+    '''
     @staticmethod
     def get_association_prompt(word):
         return 'Enter words to associate {} with, separated by space: '.format(Display.bold_replace(word))
 
+    '''
+    Given a string, wraps it within an error log.
+    '''
     @staticmethod
     def error(s):
         Display.display('[Error] {}'.format(s), True)
 
+    '''
+    Given a string, wraps it within an info log.
+    '''
     @staticmethod
     def info(s):
         Display.display('[Info] {}'.format(s))
 
+    '''
+    Very extra method.
+    '''
     @staticmethod
     def new_line():
         Display.display('')

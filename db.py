@@ -31,22 +31,40 @@ class Db(object):
             self.total_word_count += 1
             self.data[key.lower()] = line
 
+    '''
+    Returns the underlying dictionary.
+    '''
     def get_data(self):
         return self.data
 
+    '''
+    Returns the number of error lines.
+    '''
     def get_error_lines(self):
         return self.error_lines
 
+    '''
+    Returns the next random key/value pair from the dictionary.
+    '''
     def get_next_key_value(self):
         k = random.choice(self.data.keys())
         return (k, self.data[k])
 
+    '''
+    Returns the known word count.
+    '''
     def get_known_word_count(self):
         return self.known_word_count
 
+    '''
+    Returns the total word count.
+    '''
     def get_total_word_count(self):
         return self.total_word_count
 
+    '''
+    Marks a key as known by inserting a marker in both the key and value.
+    '''
     def mark(self, k):
         if k in self.data:
             words = self.data[k].split()
@@ -57,6 +75,9 @@ class Db(object):
             self.data[Db.mark_key_as_known(k)] = '{} {}'.format(KNOWN_WORD_MARKER, self.data[k])
             self.data.pop(k)
 
+    '''
+    Unmarks a key as known by removing markers in both the key and value.
+    '''
     def unmark(self, k):
         if k in self.data:
             words = self.data[k].split()
@@ -65,10 +86,16 @@ class Db(object):
                 self.data[Db.strip_key(k)] = ' '.join(words[1:])
                 self.data.pop(k)
 
+    '''
+    Given a string key, marks it as known by adding a marker.
+    '''
     @staticmethod
     def mark_key_as_known(k):
         return k + ' ' + Display.thumbs_up_emoji()
 
+    '''
+    Given a string key, removes the trailing markers.
+    '''
     @staticmethod
     def strip_key(k):
         return k.split()[0]
