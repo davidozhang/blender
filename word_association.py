@@ -67,9 +67,10 @@ class WordAssociation(object):
     any associations.
     '''
     def get_associations_for_word(self, word):
-        result = []
+        result = set()
         indices = self.lookup_indices(word)
         for index in indices:
             association = self.associations[index]
-            result += association
-        return result
+            for word in association:
+                result.add(word)
+        return list(result)
