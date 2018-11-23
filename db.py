@@ -1,6 +1,8 @@
 import random
 
 from display import Display
+from emoji_mapper import EmojiMapper
+from emoji_types import EmojiTypes
 from search import Search
 
 KNOWN_WORD_MARKER = '#'
@@ -26,7 +28,7 @@ class Db(object):
 
             if len(words) > 0 and words[0] == KNOWN_WORD_MARKER:
                 self.known_word_count += 1
-                key = Db.mark_key_as_known(key)
+                key = Db.mark_key(key, EmojiMapper.get(EmojiTypes.THUMBS_UP))
 
             self.total_word_count += 1
             self.data[key.lower()] = line
@@ -65,14 +67,14 @@ class Db(object):
     '''
     Marks a key as known by inserting a marker in both the key and value.
     '''
-    def mark(self, k):
+    def mark(self, k, marker):
         if k in self.data:
             words = self.data[k].split()
             if len(words) > 0 and words[0] == KNOWN_WORD_MARKER:
                 return
 
             self.known_word_count += 1
-            self.data[Db.mark_key_as_known(k)] = '{} {}'.format(KNOWN_WORD_MARKER, self.data[k])
+            self.data[Db.mark_key(k, marker)] = '{} {}'.format(KNOWN_WORD_MARKER, self.data[k])
             self.data.pop(k)
 
     '''
@@ -90,8 +92,10 @@ class Db(object):
     Given a string key, marks it as known by adding a marker.
     '''
     @staticmethod
-    def mark_key_as_known(k):
-        return k + ' ' + Display.thumbs_up_emoji()
+    def mark_key(k, marker):
+        if marker in k:
+            return k
+        return k + ' ' + marker
 
     '''
     Given a string key, removes the trailing markers.

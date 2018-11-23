@@ -15,6 +15,8 @@ import sys
 from command import Command
 from db import Db
 from display import Display
+from emoji_mapper import EmojiMapper
+from emoji_types import EmojiTypes
 from input_mapper import InputMapper
 from file_io import FileIO
 from word_association import WordAssociation
@@ -55,6 +57,10 @@ def main():
             if not error and next_word:
                 k, v = db.get_next_key_value()
 
+            associations = wa.get_associations_for_word(Db.strip_key(k))
+            if len(associations) > 0:
+                k = Db.mark_key(k, EmojiMapper.get(EmojiTypes.EYES))
+
             Display.display(k, True)
 
             error = False
@@ -62,16 +68,16 @@ def main():
 
             inp = raw_input(prompt).lower()
             commands = InputMapper.get_commands(inp)
+            word = Db.strip_key(k)
 
             for command in commands:
                 if command == Command.KNOW_IT:
-                    db.mark(k)
+                    db.mark(k, EmojiMapper.get(EmojiTypes.THUMBS_UP))
                     next_word = True
                 elif command == Command.SKIP:
                     db.unmark(k)
                     next_word = True
                 elif command == Command.OPEN_DICTIONARY:
-                    word = Db.strip_key(k)
                     Display.info('Opening dictionary for ' + Display.bold_replace(word))
                     os.system('open dict://{}'.format(word))
                 elif command == Command.SHOW_CONTEXT:
@@ -83,18 +89,18 @@ def main():
                         db.get_known_word_count()
                     )
                 elif command == Command.ASSOCIATE:
-                    word = Db.strip_key(k)
                     word_prompt = Display.get_association_prompt(word)
                     associations = raw_input(word_prompt).split()
                     associations = [w.lower() for w in associations]
                     associations.append(word)
                     wa.associate(associations)
                 elif command == Command.DISPLAY_ASSOCIATED_WORDS:
-                    word = Db.strip_key(k)
-                    words = wa.get_associations_for_word(word)
-                    Display.display_associated_words(words)
+                    Display.display_associated_words(associations)
                 elif command == Command.DISPLAY_ALL_ASSOCIATIONS:
-                    Display.display_all_associations(wa.get_all_associations(), wa.get_num_associations())
+                    Display.display_all_associations(
+                        wa.get_all_associations(),
+                        wa.get_num_associations()
+                    )
                 elif command == Command.CONFLICTING:
                     Display.error('Conflicting command')
                     error = True
