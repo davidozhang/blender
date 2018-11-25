@@ -1,5 +1,7 @@
 import emoji
 
+from emoji_mapper import EmojiMapper
+from emoji_types import EmojiTypes
 from input_mapper import InputMapper
 from search import Search
 
@@ -21,13 +23,6 @@ class Display:
         for j in l:
             print '* '+j+' '*(max-1-len('* ' + j)) + '*'
         print border + '\n'
-
-    '''
-    Returns a terminal-compatible thumbs up emoji.
-    '''
-    @staticmethod
-    def thumbs_up_emoji():
-        return emoji.emojize(':thumbs_up:')
 
     '''
     Given a string, returns it bolded.
@@ -81,7 +76,8 @@ class Display:
         header_list = [
             'Blender - Word flashcard generator',
             Display.get_number_of_words_string(twc, kwc),
-            'A word that you already know is marked with a ' + Display.thumbs_up_emoji(),
+            'A word that you already know is marked with a ' + EmojiMapper.get(EmojiTypes.THUMBS_UP),
+            'If word associations exist for the word, it will be marked with a ' + EmojiMapper.get(EmojiTypes.EYES),
             'Keyboard shortcuts: ',
         ]
 
