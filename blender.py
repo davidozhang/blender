@@ -57,11 +57,12 @@ def main():
             if not error and next_word:
                 k, v = db.get_next_key_value()
 
+            disp = k
             associations = wa.get_associations_for_word(Db.strip_key(k))
             if len(associations) > 0:
-                k = Db.mark_key(k, EmojiMapper.get(EmojiTypes.EYES))
+                disp = Db.mark_key(k, EmojiMapper.get(EmojiTypes.EYES))
 
-            Display.display(k, True)
+            Display.display(disp, True)
 
             error = False
             next_word = False
