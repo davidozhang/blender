@@ -15,6 +15,9 @@ class Db(object):
         self.total_word_count = 0
         self.error_lines = []
 
+        if len(lines) == 0:
+            raise Exception('Empty sentences file provided')
+
         for line in lines:
             words = line.split()
 

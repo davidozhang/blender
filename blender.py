@@ -31,7 +31,12 @@ def main():
     args = parser.parse_args()
     sentences_file = args.sentences
 
-    db = Db(FileIO.read(sentences_file))
+    try:
+        db = Db(FileIO.read(sentences_file))
+    except Exception:
+        Display.error('Error occurred while processing sentences file.')
+        sys.exit()
+
     wa = WordAssociation(FileIO.read_optional(WORD_ASSOCIATION_DEFAULT_FILE))
 
     error_lines = db.get_error_lines()
